@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'settings_page.dart';
 
 class SummarizerPage extends StatelessWidget {
   @override
@@ -11,10 +12,7 @@ class SummarizerPage extends StatelessWidget {
         toolbarHeight: 150,
         title: GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
           },
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -74,10 +72,9 @@ class SummarizerPage extends StatelessWidget {
         ],
         onTap: (index) {
           if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
+          } else if (index == 1) {
+            Navigator.pushNamedAndRemoveUntil(context, '/settings', (route) => false);
           }
         },
       ),

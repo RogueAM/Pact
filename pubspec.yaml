@@ -58,6 +58,11 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - assets/NotePad_Icon.jpeg
+    - assets/Pact-Logo.jpeg
+    - assets/Dictionary-icon.jpeg
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

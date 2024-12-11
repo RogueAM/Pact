@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'home_page.dart';
 
 class DictionaryPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,10 +70,9 @@ class DictionaryPage extends StatelessWidget {
         ],
         onTap: (index) {
           if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
+            Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
+          } else if (index == 1) {
+            Navigator.pushNamedAndRemoveUntil(context, '/settings', (route) => false);
           }
         },
       ),

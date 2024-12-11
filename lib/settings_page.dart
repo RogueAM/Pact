@@ -42,7 +42,7 @@ class SettingsScreen extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 22),
             ),
             SizedBox(height: 20),
-            SettingsButton(title: 'Notification', route: NotificationPage()),
+            SettingsButton(title: 'Notifications', route: NotificationPage()),
             SettingsButton(title: 'Data Privacy', route: DataPrivacyPage()),
             SettingsButton(title: 'Summary', route: SummaryPage()),
           ],
