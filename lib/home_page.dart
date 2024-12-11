@@ -23,6 +23,9 @@ class _HomePageState extends State<HomePage> {
       Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
     } else if (index == 1) {
       Navigator.pushNamedAndRemoveUntil(context, '/settings', (route) => false);
+    } else if (index ==2) {
+      Navigator.pushNamedAndRemoveUntil(context, '/about_us', (route) => false);
+
     }
   }
 
@@ -37,40 +40,38 @@ class _HomePageState extends State<HomePage> {
       onWillPop: _onWillPop,
       child: Scaffold(
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          toolbarHeight: 150,
-          title: Center(
-            child: GestureDetector(
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+            toolbarHeight: 150,  // Adjust as needed
+            title: GestureDetector(
               onTap: () {
-                Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
               },
               child: Column(
-                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,  // Center the content vertically
                 children: [
-                  Image.asset('assets/Pact-Logo.jpeg', height: 100),
-                  SizedBox(height: 5),
-                  Text(
-                    'Pact.',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Image.asset(
+                    'assets/Pact-Logo.jpeg', // Image to replace the eye icon
+                    height: 100,  // Adjust the size of the image as needed
                   ),
+                  SizedBox(height: 5),
                 ],
               ),
             ),
+            centerTitle: true,  // Ensure the title is centered in the AppBar
           ),
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 20),
                 Text(
+
                   'Pact.',
                   style: TextStyle(
                     fontSize: 32,
@@ -78,35 +79,30 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   ),
                 ),
+                Divider(color: Colors.white70),
                 SizedBox(height: 20),
-                TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search your apps',
-                    suffixIcon: Icon(Icons.search, color: Colors.white),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    fillColor: Colors.grey[800],
-                    filled: true,
-                  ),
-                  style: TextStyle(color: Colors.white),
+                _buildToolItem(
+                  context,
+                  'My Apps',
+                  Icons.apps,
+                  'View your apps and their key terms in simple summaries.',
+                  MyAppsPage(),
                 ),
                 SizedBox(height: 20),
-                Text(
-                  'Welcome',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
+                _buildToolItem(
+                  context,
+                  'Summarizer',
+                  Icons.text_snippet,
+                  'Quickly generate concise summaries of complex legal documents.',
+                  SummarizerPage(),
                 ),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildIconButton(context, 'My Apps', Icons.apps, MyAppsPage()),
-                    _buildIconButton(context, 'Summarizer', Icons.text_snippet, SummarizerPage()),
-                    _buildIconButton(context, 'Dictionary', Icons.book, DictionaryPage()),
-                  ],
+                _buildToolItem(
+                  context,
+                  'Dictionary',
+                  Icons.book,
+                  'Understand legal and technical terms with simplified explanations.',
+                  DictionaryPage(),
                 ),
               ],
             ),
@@ -136,37 +132,50 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildIconButton(
-      BuildContext context, String label, IconData icon, Widget? page) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {
-            if (page != null) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => page),
-              );
-            }
-          },
-          child: Container(
-            padding: EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: Colors.grey[800],
-              shape: BoxShape.circle,
+  Widget _buildToolItem(BuildContext context, String title, IconData icon, String description, Widget page) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white12,
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        child: Row(
+          children: [
+            Icon(icon, size: 50, color: Colors.white),
+            SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: Icon(icon, size: 50, color: Colors.white),
-          ),
+          ],
         ),
-        SizedBox(height: 5),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

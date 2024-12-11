@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pact_app_1/about_us_page.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 import 'settings_page.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/notification': (context) => NotificationPage(),
         '/data_privacy': (context) => DataPrivacyPage(),
         '/summary': (context) => SummaryPage(),
+        '/about_us': (context) => AboutUsPage(),
       },
     );
   }

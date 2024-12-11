@@ -9,20 +9,26 @@ class SummarizerPage extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        toolbarHeight: 150,
+        toolbarHeight: 150,  // Adjust as needed
         title: GestureDetector(
           onTap: () {
-            Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
           },
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,  // Center the content vertically
             children: [
-              Icon(Icons.remove_red_eye, size: 50, color: Colors.white),
+              Image.asset(
+                'assets/Pact-Logo.jpeg', // Image to replace the eye icon
+                height: 75,  // Adjust the size of the image as needed
+              ),
               SizedBox(height: 5),
-              Text('Pact.', style: TextStyle(color: Colors.white)),
             ],
           ),
         ),
+        centerTitle: true,  // Ensure the title is centered in the AppBar
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -75,6 +81,8 @@ class SummarizerPage extends StatelessWidget {
             Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
           } else if (index == 1) {
             Navigator.pushNamedAndRemoveUntil(context, '/settings', (route) => false);
+          } else if (index == 2) {
+            Navigator.pushNamedAndRemoveUntil(context, '/about_us', (route) => false);
           }
         },
       ),

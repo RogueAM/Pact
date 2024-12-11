@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'home_page.dart';
+import 'settings_page.dart';
 
 class MyAppsPage extends StatelessWidget {
   const MyAppsPage({super.key});
@@ -19,12 +21,27 @@ class MyAppsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Center(
-          child: Image.asset(
-            'assets/Pact-Logo.jpeg',
-            height: 50,
+        toolbarHeight: 150,  // Adjust as needed
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,  // Center the content vertically
+            children: [
+              Image.asset(
+                'assets/Pact-Logo.jpeg', // Image to replace the eye icon
+                height: 75,  // Adjust the size of the image as needed
+              ),
+              SizedBox(height: 5),
+              Text('Pact.', style: TextStyle(color: Colors.white)),
+            ],
           ),
         ),
+        centerTitle: true,  // Ensure the title is centered in the AppBar
       ),
       body: Container(
         color: Colors.black,
@@ -71,13 +88,16 @@ class MyAppsPage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.home, color: Colors.white),
               onPressed: () {
-                Navigator.pop(context); // Navigate back to home page
+                Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
               },
             ),
             IconButton(
               icon: const Icon(Icons.settings, color: Colors.white),
               onPressed: () {
-                // Navigate to settings page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsScreen()),
+                );
               },
             ),
             IconButton(
@@ -95,14 +115,16 @@ class MyAppsPage extends StatelessWidget {
   Widget _buildAppIcon(String appName) {
     return Column(
       children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: Colors.grey[800], // Icon background
-            shape: BoxShape.circle,
+        Center(
+          child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.grey[800], // Icon background
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.apps, color: Colors.white), // Placeholder icon
           ),
-          child: const Icon(Icons.apps, color: Colors.white), // Placeholder icon
         ),
         const SizedBox(height: 5),
         Text(

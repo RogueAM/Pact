@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'settings_page.dart';
 
 class DataPrivacyPage extends StatefulWidget {
   static const routeName = '/data_privacy';
@@ -12,6 +13,13 @@ class _DataPrivacyPageState extends State<DataPrivacyPage> {
   bool _shareDataWithPartners = false;
   bool _allowDataCollection = false;
 
+  final Map<String, bool> _toggles = {
+    'Data collections': false,
+    'Data Analytics': false,
+    'Overlay Access': false,
+    'Storage Access': false,
+  };
+
   int _selectedIndex = 1;  // Default to settings since it's a settings subpage
 
   void _onItemTapped(int index) {
@@ -22,6 +30,8 @@ class _DataPrivacyPageState extends State<DataPrivacyPage> {
       Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
     } else if (index == 1) {
       Navigator.pushNamedAndRemoveUntil(context, '/settings', (route) => false);
+    } else if (index == 2) {
+      Navigator.pushNamedAndRemoveUntil(context, '/about_us', (route) => false);
     }
   }
 
@@ -31,55 +41,65 @@ class _DataPrivacyPageState extends State<DataPrivacyPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        toolbarHeight: 150,
-        title: Center(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.remove_red_eye, size: 50, color: Colors.white),
-                SizedBox(height: 5),
-                Text('Pact.', style: TextStyle(color: Colors.white)),
-              ],
-            ),
+        toolbarHeight: 150,  // Adjust as needed
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,  // Center the content vertically
+            children: [
+              Image.asset(
+                'assets/Pact-Logo.jpeg', // Image to replace the eye icon
+                height: 75,  // Adjust the size of the image as needed
+              ),
+              SizedBox(height: 5),
+            ],
           ),
         ),
+        centerTitle: true,  // Ensure the title is centered in the AppBar
       ),
-      body: SingleChildScrollView( // Added SingleChildScrollView to make content scrollable
-        child: Padding(
+        body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ListTile(
-                title: Text('Share Data with Partners', style: TextStyle(color: Colors.white)),
-                trailing: Switch(
-                  value: _shareDataWithPartners,
-                  onChanged: (value) {
-                    setState(() {
-                      _shareDataWithPartners = value;
-                    });
-                  },
-                ),
+              Text(
+                'DATA PRIVACY',
+                style: TextStyle(color: Colors.white, fontSize: 24),
               ),
-              ListTile(
-                title: Text('Allow Data Collection', style: TextStyle(color: Colors.white)),
-                trailing: Switch(
-                  value: _allowDataCollection,
-                  onChanged: (value) {
-                    setState(() {
-                      _allowDataCollection = value;
-                    });
-                  },
+              SizedBox(height: 20),
+              Divider(color:Colors.white70),
+              Expanded(
+                child: ListView(
+                  shrinkWrap: true, // Ensure the ListView does not take up infinite height
+                  children: _toggles.keys.map((key) {
+                    return AnimatedSwitcher(
+                      duration: Duration(milliseconds: 300), // Adjust the duration as needed
+                      child: SwitchListTile(
+                        key: ValueKey<String>(key), // Ensure the widget is uniquely identified
+                        title: Text(
+                          key,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        value: _toggles[key]!,
+                        activeColor: Colors.deepPurple,
+                        onChanged: (bool value) {
+                          setState(() {
+                            _toggles[key] = value;
+                          });
+                        },
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
           ),
         ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.black,
         items: const <BottomNavigationBarItem>[

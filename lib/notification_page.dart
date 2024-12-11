@@ -23,6 +23,9 @@ class _NotificationPageState extends State<NotificationPage> {
       Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
     } else if (index == 1) {
       Navigator.pushNamedAndRemoveUntil(context, '/settings', (route) => false);
+    } else if (index ==2) {
+      Navigator.pushNamedAndRemoveUntil(context, '/about_us', (route) => false);
+
     }
   }
 
@@ -32,22 +35,26 @@ class _NotificationPageState extends State<NotificationPage> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        toolbarHeight: 150,
-        title: Center(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.remove_red_eye, size: 50, color: Colors.white),
-                SizedBox(height: 5),
-                Text('Pact.', style: TextStyle(color: Colors.white)),
-              ],
-            ),
+        toolbarHeight: 150,  // Adjust as needed
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,  // Center the content vertically
+            children: [
+              Image.asset(
+                'assets/Pact-Logo.jpeg', // Image to replace the eye icon
+                height: 75,  // Adjust the size of the image as needed
+              ),
+              SizedBox(height: 5),
+            ],
           ),
         ),
+        centerTitle: true,  // Ensure the title is centered in the AppBar
       ),
       body: SingleChildScrollView( // Added SingleChildScrollView to make content scrollable
         child: Padding(
