@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'home_page.dart';
 
-class DictionaryPage extends StatelessWidget {
+class DictionaryPage extends StatefulWidget {
+  @override
+  _DictionaryPageState createState() => _DictionaryPageState();
+}
+
+class _DictionaryPageState extends State<DictionaryPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String searchTerm = '';
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +17,7 @@ class DictionaryPage extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        toolbarHeight: 150,  // Adjust as needed
+        toolbarHeight: 150,
         title: GestureDetector(
           onTap: () {
             Navigator.push(
@@ -18,17 +26,17 @@ class DictionaryPage extends StatelessWidget {
             );
           },
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,  // Center the content vertically
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/Pact-Logo.jpeg', // Image to replace the eye icon
-                height: 75,  // Adjust the size of the image as needed
+                'assets/Pact-Logo.jpeg',
+                height: 75,
               ),
               SizedBox(height: 5),
             ],
           ),
         ),
-        centerTitle: true,  // Ensure the title is centered in the AppBar
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -43,14 +51,59 @@ class DictionaryPage extends StatelessWidget {
                 fillColor: Colors.white,
                 hintText: 'Enter word to look up',
                 border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.search),
               ),
+              onChanged: (value) {
+                setState(() {
+                  searchTerm = value.toLowerCase();
+                });
+              },
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Add functionality for looking up the word
-              },
-              child: Text('Look Up'),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: _firestore.collection('Dictionary').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white));
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  final filteredDocs = snapshot.data!.docs.where((doc) {
+                    return doc['Term'].toString().toLowerCase().contains(searchTerm) ||
+                        doc['Meaning'].toString().toLowerCase().contains(searchTerm);
+                  }).toList();
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: filteredDocs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot doc = filteredDocs[index];
+                      return ListTile(
+                        title: Text(
+                          doc['Term'],
+                          style: TextStyle(
+                            color: Colors.white, // Brighter color for terms
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: Text(
+                          doc['Meaning'],
+                          style: TextStyle(
+                            color: Colors.white60, // Brighter color for meanings
+                            fontSize: 16,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -76,9 +129,8 @@ class DictionaryPage extends StatelessWidget {
             Navigator.pushNamedAndRemoveUntil(context, HomePage.routeName, (route) => false);
           } else if (index == 1) {
             Navigator.pushNamedAndRemoveUntil(context, '/settings', (route) => false);
-          } else if (index ==2) {
+          } else if (index == 2) {
             Navigator.pushNamedAndRemoveUntil(context, '/about_us', (route) => false);
-
           }
         },
       ),

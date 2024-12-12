@@ -42,3 +42,15 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    // Add Firebase BoM to manage Firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:32.0.0') // Use the latest version
+
+    // Add Firebase services as needed
+    implementation 'com.google.firebase:firebase-analytics'      // Firebase Analytics
+    implementation 'com.google.firebase:firebase-firestore'      // Firebase Firestore
+    // Add other Firebase libraries if needed (e.g., Firebase Auth, Cloud Messaging)
+}
+
+apply plugin: 'com.google.gms.google-services'
