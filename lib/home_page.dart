@@ -71,7 +71,6 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SizedBox(height: 20),
                 Text(
-
                   'Pact.',
                   style: TextStyle(
                     fontSize: 32,
